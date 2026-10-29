@@ -1,0 +1,428 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DCE2C82D080DF83E72772B8D /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266A609B44979E9FF471C0F /* AboutView.swift */; };
+		9890483E1DDAC25C58B9D467 /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C5FA8437A28672733D3596 /* Bridge.swift */; };
+		EC518DAA2D2554F3AECBEAD7 /* CategoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE715487442F953D38B90449 /* CategoryCard.swift */; };
+		39A850CDC8EBD808DC252B3B /* CleanStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB569C3EE865FB10318CF92 /* CleanStore.swift */; };
+		7BA33494A79C1D6ABA2C9944 /* CleanWizardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276E027A1E0E4DCBC9D08550 /* CleanWizardApp.swift */; };
+		4674FF7E5F434E33D8E8480B /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220C3FF1AC38611952AE8FB1 /* Engine.swift */; };
+		EB1F1671D98430A91D3345AA /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9B1F7407ED5F3A54A0C208 /* MainWindowView.swift */; };
+		1067D5484C562FBB1B826A7D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274545ACB49014F49C943D2 /* Models.swift */; };
+		09A8C028A01A315183DB86EA /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DEF2AC3F281D8BF4DBD248 /* ProgressRing.swift */; };
+		0326A7778907AC9F29B3ECB0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA6FC2C3B46C0F1E907A51C /* SettingsView.swift */; };
+		E977E896BD6A0390AD5B9A14 /* CleanWizardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2378EDFB99180A5162B7E /* CleanWizardTests.swift */; };
+		06BDDAD6A848BE64096FD69D /* Rules in Resources */ = {isa = PBXBuildFile; fileRef = 0DA0F94C18BD6295C23EE07C /* Rules */; };
+		9E235FB5C20267F1FAC1C19D /* CWBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E318BB770C62F7A83282700 /* CWBridge.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		76CDF1480A71FE5EED9B93C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D05A4E8CA1EAEB5839BBB665 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B8AC782CF2CCA7FE31C8E1A;
+			remoteInfo = CleanWizard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		34B15E2FEEE2BD4BA88DD3EC /* CleanWizard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanWizard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		480FFABD23723D730A4D0556 /* CleanWizardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanWizardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A266A609B44979E9FF471C0F /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		61C5FA8437A28672733D3596 /* Bridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
+		FE715487442F953D38B90449 /* CategoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCard.swift; sourceTree = "<group>"; };
+		DEB569C3EE865FB10318CF92 /* CleanStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanStore.swift; sourceTree = "<group>"; };
+		276E027A1E0E4DCBC9D08550 /* CleanWizardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanWizardApp.swift; sourceTree = "<group>"; };
+		220C3FF1AC38611952AE8FB1 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		5D9B1F7407ED5F3A54A0C208 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
+		5274545ACB49014F49C943D2 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		51DEF2AC3F281D8BF4DBD248 /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
+		5CA6FC2C3B46C0F1E907A51C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		CFB2378EDFB99180A5162B7E /* CleanWizardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanWizardTests.swift; sourceTree = "<group>"; };
+		6E318BB770C62F7A83282700 /* CWBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CWBridge.m; sourceTree = "<group>"; };
+		D7FB34E6CCCF1818DB3FA425 /* CWBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CWBridge.h; sourceTree = "<group>"; };
+		91B9597BE9945DE162466BC4 /* CWEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CWEngine.h; sourceTree = "<group>"; };
+		77DB7A987381C3D8490E4EF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DA0F94C18BD6295C23EE07C /* Rules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Rules; sourceTree = "<group>"; };
+		658651EB53F5A8EE83BA8678 /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Shared.xcconfig; path = Configs/Shared.xcconfig; sourceTree = "<group>"; };
+		A4170893A163345B0D031473 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Configs/Debug.xcconfig; sourceTree = "<group>"; };
+		F92D04A2F1EF522E690A1106 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Configs/Release.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B2EEC69ABD3BB3145200BCD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		24FE6CC8125508D6FEF25DA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D5D32C66C9351B4B58DF29C0 /* CleanWizard */ = {
+			isa = PBXGroup;
+			children = (
+				24A14C77185229AF5992FBDD /* CleanWizard */,
+				F58BFF5091E975A6D0CCC380 /* CleanWizardTests */,
+				A8B6F4098B665533DDFDC8A0 /* Configs */,
+				C069AF5E8714923D9F7DF29E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		24A14C77185229AF5992FBDD /* CleanWizard */ = {
+			isa = PBXGroup;
+			children = (
+				7E679CAFAC610517052B7317 /* App */,
+				034279FBA5F5584B336A3B34 /* Bridge */,
+				E18696BA893FA70BA8739AF6 /* Resources */,
+				77DB7A987381C3D8490E4EF8 /* Info.plist */,
+			);
+			path = CleanWizard;
+			sourceTree = "<group>";
+		};
+		7E679CAFAC610517052B7317 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A266A609B44979E9FF471C0F /* AboutView.swift */,
+				61C5FA8437A28672733D3596 /* Bridge.swift */,
+				FE715487442F953D38B90449 /* CategoryCard.swift */,
+				DEB569C3EE865FB10318CF92 /* CleanStore.swift */,
+				276E027A1E0E4DCBC9D08550 /* CleanWizardApp.swift */,
+				220C3FF1AC38611952AE8FB1 /* Engine.swift */,
+				5D9B1F7407ED5F3A54A0C208 /* MainWindowView.swift */,
+				5274545ACB49014F49C943D2 /* Models.swift */,
+				51DEF2AC3F281D8BF4DBD248 /* ProgressRing.swift */,
+				5CA6FC2C3B46C0F1E907A51C /* SettingsView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		034279FBA5F5584B336A3B34 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				D7FB34E6CCCF1818DB3FA425 /* CWBridge.h */,
+				6E318BB770C62F7A83282700 /* CWBridge.m */,
+				91B9597BE9945DE162466BC4 /* CWEngine.h */,
+			);
+			path = Bridge;
+			sourceTree = "<group>";
+		};
+		E18696BA893FA70BA8739AF6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0DA0F94C18BD6295C23EE07C /* Rules */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F58BFF5091E975A6D0CCC380 /* CleanWizardTests */ = {
+			isa = PBXGroup;
+			children = (
+				CFB2378EDFB99180A5162B7E /* CleanWizardTests.swift */,
+			);
+			path = CleanWizardTests;
+			sourceTree = "<group>";
+		};
+		A8B6F4098B665533DDFDC8A0 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				658651EB53F5A8EE83BA8678 /* Shared.xcconfig */,
+				A4170893A163345B0D031473 /* Debug.xcconfig */,
+				F92D04A2F1EF522E690A1106 /* Release.xcconfig */,
+			);
+			name = Configs;
+			sourceTree = "<group>";
+		};
+		C069AF5E8714923D9F7DF29E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34B15E2FEEE2BD4BA88DD3EC /* CleanWizard.app */,
+				480FFABD23723D730A4D0556 /* CleanWizardTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0B8AC782CF2CCA7FE31C8E1A /* CleanWizard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1714A7C3147B27F636F2E0C7 /* Build configuration list for PBXNativeTarget "CleanWizard" */;
+			buildPhases = (
+				757837740527D111D30777E3 /* Build Rust Engine */,
+				847C07F510E2485DBCD93827 /* Sources */,
+				B2EEC69ABD3BB3145200BCD1 /* Frameworks */,
+				F1E43153B3B0F133DE6E9D4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CleanWizard;
+			productName = CleanWizard;
+			productReference = 34B15E2FEEE2BD4BA88DD3EC /* CleanWizard.app */;
+			productType = "com.apple.product-type.application";
+		};
+		83A1DA0BFFEC53F89712778C /* CleanWizardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 59918E5CBCCBCFD01CA3B7EB /* Build configuration list for PBXNativeTarget "CleanWizardTests" */;
+			buildPhases = (
+				8D3B09298B4923F4E5237BAA /* Sources */,
+				24FE6CC8125508D6FEF25DA4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				68888E96D185F741553CCADD /* PBXTargetDependency */,
+			);
+			name = CleanWizardTests;
+			productName = CleanWizardTests;
+			productReference = 480FFABD23723D730A4D0556 /* CleanWizardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D05A4E8CA1EAEB5839BBB665 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					0B8AC782CF2CCA7FE31C8E1A = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					83A1DA0BFFEC53F89712778C = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 0B8AC782CF2CCA7FE31C8E1A;
+					};
+				};
+			};
+			buildConfigurationList = 630C5AB3E56C89DCD060E72A /* Build configuration list for PBXProject "CleanWizard" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D5D32C66C9351B4B58DF29C0 /* CleanWizard */;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C069AF5E8714923D9F7DF29E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0B8AC782CF2CCA7FE31C8E1A /* CleanWizard */,
+				83A1DA0BFFEC53F89712778C /* CleanWizardTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F1E43153B3B0F133DE6E9D4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06BDDAD6A848BE64096FD69D /* Rules in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		757837740527D111D30777E3 /* Build Rust Engine */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Rust Engine";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -euo pipefail\n\"$SRCROOT/scripts/build-rust.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		847C07F510E2485DBCD93827 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCE2C82D080DF83E72772B8D /* AboutView.swift in Sources */,
+				9890483E1DDAC25C58B9D467 /* Bridge.swift in Sources */,
+				EC518DAA2D2554F3AECBEAD7 /* CategoryCard.swift in Sources */,
+				39A850CDC8EBD808DC252B3B /* CleanStore.swift in Sources */,
+				7BA33494A79C1D6ABA2C9944 /* CleanWizardApp.swift in Sources */,
+				4674FF7E5F434E33D8E8480B /* Engine.swift in Sources */,
+				EB1F1671D98430A91D3345AA /* MainWindowView.swift in Sources */,
+				1067D5484C562FBB1B826A7D /* Models.swift in Sources */,
+				09A8C028A01A315183DB86EA /* ProgressRing.swift in Sources */,
+				0326A7778907AC9F29B3ECB0 /* SettingsView.swift in Sources */,
+				9E235FB5C20267F1FAC1C19D /* CWBridge.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D3B09298B4923F4E5237BAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E977E896BD6A0390AD5B9A14 /* CleanWizardTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		68888E96D185F741553CCADD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B8AC782CF2CCA7FE31C8E1A /* CleanWizard */;
+			targetProxy = 76CDF1480A71FE5EED9B93C6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		186FBC56FCFA175985DBE402 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4170893A163345B0D031473 /* Debug.xcconfig */;
+			buildSettings = {
+				MARKETING_VERSION = 1.0.0;
+				CURRENT_PROJECT_VERSION = 1;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				SWIFT_VERSION = 5.0;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				DEAD_CODE_STRIPPING = YES;
+				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOL_EXTENSIONS = YES;
+			};
+			name = Debug;
+		};
+		81C7488E5E4579976130DCBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F92D04A2F1EF522E690A1106 /* Release.xcconfig */;
+			buildSettings = {
+				MARKETING_VERSION = 1.0.0;
+				CURRENT_PROJECT_VERSION = 1;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				SWIFT_VERSION = 5.0;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				DEAD_CODE_STRIPPING = YES;
+				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOL_EXTENSIONS = YES;
+			};
+			name = Release;
+		};
+		FDFD53CCA9E3B2E3C0D7115B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4170893A163345B0D031473 /* Debug.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "$(SRCROOT)/CleanWizard/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.cleanwizard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				OTHER_LDFLAGS = ("-L$(SRCROOT)/engine/target/$(CLEANWIZARD_RUST_TRIPLE)/debug", "-lcleanwizard_engine", "-lc++", "-framework", "CoreFoundation", "-framework", "Foundation", "-framework", "Security");
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/engine/target/$(CLEANWIZARD_RUST_TRIPLE)/debug";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/CleanWizard/CleanWizard-Bridging-Header.h";
+				HEADER_SEARCH_PATHS = ("$(SRCROOT)/CleanWizard/Bridge");
+				ENABLE_APP_SANDBOX = NO;
+			};
+			name = Debug;
+		};
+		6A98E7D0C8D1B093A6A73CE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F92D04A2F1EF522E690A1106 /* Release.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "$(SRCROOT)/CleanWizard/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.cleanwizard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				OTHER_LDFLAGS = ("-L$(SRCROOT)/engine/target/$(CLEANWIZARD_RUST_TRIPLE)/release", "-lcleanwizard_engine", "-lc++", "-framework", "CoreFoundation", "-framework", "Foundation", "-framework", "Security");
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/engine/target/$(CLEANWIZARD_RUST_TRIPLE)/release";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/CleanWizard/CleanWizard-Bridging-Header.h";
+				HEADER_SEARCH_PATHS = ("$(SRCROOT)/CleanWizard/Bridge");
+				ENABLE_APP_SANDBOX = NO;
+			};
+			name = Release;
+		};
+		FCC648DF6A14045C68FFCDE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4170893A163345B0D031473 /* Debug.xcconfig */;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.cleanwizard.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CleanWizard.app/Contents/MacOS/CleanWizard";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		351DD8281CE52C5DAF73CFCD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F92D04A2F1EF522E690A1106 /* Release.xcconfig */;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.cleanwizard.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CleanWizard.app/Contents/MacOS/CleanWizard";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		630C5AB3E56C89DCD060E72A /* Build configuration list for PBXProject "CleanWizard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				186FBC56FCFA175985DBE402 /* Debug */,
+				81C7488E5E4579976130DCBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1714A7C3147B27F636F2E0C7 /* Build configuration list for PBXNativeTarget "CleanWizard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FDFD53CCA9E3B2E3C0D7115B /* Debug */,
+				6A98E7D0C8D1B093A6A73CE8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		59918E5CBCCBCFD01CA3B7EB /* Build configuration list for PBXNativeTarget "CleanWizardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCC648DF6A14045C68FFCDE5 /* Debug */,
+				351DD8281CE52C5DAF73CFCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D05A4E8CA1EAEB5839BBB665 /* Project object */;
+}

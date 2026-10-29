@@ -1,0 +1,26 @@
+[package]
+name = "cleanwizard_engine"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+description = "CleanWizard scanning engine: Lemon-compatible garbage rule parsing, concurrent scanner, duplicate/big-file/privacy scanners, C ABI."
+license = "MIT"
+publish = false
+
+[lib]
+name = "cleanwizard_engine"
+# staticlib is what Xcode links ($SRCROOT/engine/target/release/libcleanwizard_engine.a),
+# cdylib supports the C ABI smoke test, rlib supports cargo test.
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+# Intentionally dependency-free: the engine must build offline and inside
+# Xcode builds without a cargo registry or network supply chain.
+[dependencies]
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+# panic = "abort" intentionally omitted: it breaks `cargo test` (and the
+# C ABI catches unwind at the boundary via catch_unwind in release builds).
+strip = false

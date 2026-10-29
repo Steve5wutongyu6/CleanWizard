@@ -1,0 +1,26 @@
+# Build products
+build/
+engine/target/
+DerivedData/
+*.xcarchive
+*.dSYM
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+project.xcworkspace/xcuserdata/
+project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+CleanWizard.xcodeproj/project.xcworkspace/xcuserdata/
+
+# macOS
+.DS_Store
+._*
+
+# Rust
+engine/target/
+**/*.rs.bk
+
+# Logs
+*.log

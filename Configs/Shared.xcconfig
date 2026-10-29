@@ -1,0 +1,66 @@
+// CleanWizard — Shared.xcconfig  (included by Debug.xcconfig and Release.xcconfig)
+//
+// Referenced from xcodebuild as:  -xcconfig Configs/Debug.xcconfig  (or Release)
+// Config-specific files override values declared here.
+//
+// Parser note: the Xcode build-settings parser strips everything after "//" on a line.
+// Keep every comment on a single "//"-line, in plain ASCII, and never put a scheme
+// ("https", "file", "smb") or a double-slash path in a comment.
+
+// MARK::Platform
+// macOS 27 SDK, deployment target macOS 27.0 as required by the project spec.
+SDKROOT = macosx
+MACOSX_DEPLOYMENT_TARGET = 27.0
+
+// MARK::Architectures
+// Universal binary: Apple silicon and Intel. The Rust engine library is built and
+// merged per-architecture by scripts/prepare.sh; each slice is linked separately.
+ARCHS = arm64 x86_64
+ONLY_ACTIVE_ARCH = NO
+
+// MARK::Rust triple
+// Rust names targets by triple, not by Xcode architecture name, so map per arch.
+CLEANWIZARD_RUST_TRIPLE[arch=arm64] = aarch64-apple-darwin
+CLEANWIZARD_RUST_TRIPLE[arch=arm64e] = aarch64-apple-darwin
+CLEANWIZARD_RUST_TRIPLE[arch=x86_64] = x86_64-apple-darwin
+
+SWIFT_VERSION = 5.0
+
+// MARK::Signing
+// Ad-hoc ("-") signing for local builds. A Release build that is archived then
+// re-signed with a Developer ID identity by scripts/publish-github.sh.
+CODE_SIGN_IDENTITY[sdk=macosx*] = -
+CODE_SIGNING_REQUIRED = YES
+CODE_SIGNING_ALLOWED = YES
+ENABLE_HARDENED_RUNTIME = YES
+// Xcode 27 adds library validation and the hardened runtime for ad-hoc builds; keep
+// timestamping off locally, notarization stamps releases.
+CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES
+
+// MARK::Scripts
+// Rust build and fetch scripts must invoke cargo and network-fetch crates, so the
+// Run Script sandbox stays off project-wide.
+ENABLE_USER_SCRIPT_SANDBOXING = NO
+
+// MARK::Build products
+CONFIGURATION_BUILD_DIR = $(PROJECT_DIR)/build/$(CONFIGURATION)
+SYMROOT = $(PROJECT_DIR)/build
+OBJROOT = $(PROJECT_DIR)/build/$(CONFIGURATION)/obj
+// The shared scheme lets scripts locate products without knowing the project layout.
+BUILD_DIR = $(PROJECT_DIR)/build
+// Archives are written here by scripts/build.sh and read by scripts/package-dmg.sh.
+ARCHIVE_PATH = $(PROJECT_DIR)/build/CleanWizard.xcarchive
+
+// MARK::Debug symbols
+DEBUG_INFORMATION_FORMAT = dwarf
+DEBUG_INFORMATION_FORMAT[config=Release] = dwarf-with-dsym
+COPY_PHASE_STRIP = NO
+STRIP_INSTALLED_PRODUCT = NO
+
+// MARK::Rust engine
+// Paths are declared for diagnostics only. They are not expanded inside
+// $(CONFIGURATION_BUILD_DIR) while archiving, so nothing below is used in linker
+// flags. scripts/prepare.sh resolves the per-arch library and passes the final
+// -lcleanwizard_engine location explicitly.
+CLEANWIZARD_ENGINE = cleanwizard_engine
+RUST_TARGET_DIR = $(PROJECT_DIR)/target

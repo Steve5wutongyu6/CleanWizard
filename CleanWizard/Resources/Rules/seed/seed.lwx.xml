@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<garbage version="2">
+  <category title="System Junk" type="sys">
+    <item title="User Logs" type="sys" cleanType="sys" recommend="1">
+      <path type="dir" value="~/Library/Logs">
+        <filters level="1"><filter column="filename" relation="end with" value=".log"/></filters>
+      </path>
+    </item>
+    <item title="System Logs" type="sys" cleanType="sys" recommend="1">
+      <path type="dir" value="/Library/Logs"/>
+    </item>
+    <item title="User Caches" type="sys" cleanType="sys" recommend="1">
+      <path type="dir" value="~/Library/Caches"/>
+    </item>
+    <item title="Saved Application State" type="sys" cleanType="sys">
+      <path type="dir" value="~/Library/Saved Application State"/>
+    </item>
+    <item title="Mail Downloads" type="sys" cleanType="sys">
+      <path type="dir" value="~/Library/Containers/com.apple.mail/Data/Library/Mail Downloads"/>
+    </item>
+    <item title="iOS Device Backups" type="sys" cleanType="sys" caution="1">
+      <path type="dir" value="~/Library/Application Support/MobileSync/Backup"/>
+    </item>
+    <item title="Xcode DerivedData" type="sys" cleanType="sys" recommend="1">
+      <path type="dir" value="~/Library/Developer/Xcode/DerivedData"/>
+    </item>
+  </category>
+  <category title="Application Junk" type="app">
+    <item title="Trash" type="app" cleanType="app" recommend="1">
+      <path type="dir" value="~/.Trash"/>
+    </item>
+    <item title="Downloaded Installers" type="app" cleanType="app">
+      <path type="dir" value="~/Downloads">
+        <filters level="1"><filter column="filename" relation="end with" value=".dmg"/></filters>
+        <filters level="1"><filter column="filename" relation="end with" value=".pkg"/></filters>
+      </path>
+    </item>
+  </category>
+  <category title="Browser Junk" type="int">
+    <item title="Safari Cache" type="int" cleanType="int" bundleId="com.apple.Safari">
+      <path type="dir" value="~/Library/Caches/com.apple.Safari"/>
+    </item>
+    <item title="Chrome Cache" type="int" cleanType="int" bundleId="com.google.Chrome">
+      <path type="dir" value="~/Library/Caches/com.google.Chrome"/>
+    </item>
+    <item title="Firefox Cache" type="int" cleanType="int" bundleId="org.mozilla.firefox">
+      <path type="dir" value="~/Library/Caches/Firefox"/>
+    </item>
+  </category>
+</garbage>
