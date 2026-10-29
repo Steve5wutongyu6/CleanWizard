@@ -61,10 +61,9 @@ run_app_tests() {
       -configuration Debug \
       -destination "${CW_TEST_DESTINATION}" \
       -derivedDataPath "${CW_BUILD_DIR}/DerivedData-tests" \
-      -xcconfig "${CW_ROOT}/Configs/Debug.xcconfig" \
       -resultBundlePath "${result}" \
       CODE_SIGN_IDENTITY=- \
-      MACOSX_DEPLOYMENT_TARGET="${CW_DEPLOYMENT_TARGET:-27.0}" \
+      MACOSX_DEPLOYMENT_TARGET="$(xcrun --sdk macosx --show-sdk-version)" \
       test > "${log}" 2>&1; then
     ok "xcodebuild test passed (bundle: ${result})"
   else
