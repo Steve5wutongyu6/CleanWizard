@@ -122,6 +122,18 @@ elif ! printf '%s\n' "${described_sdks}" | grep -q "${CW_SDK}"; then
   warn "SDK ${CW_SDK} was not listed; the project will build against the default SDK"
 fi
 
+# Deployment target. Local builds use the project's macOS 27 floor; a CI image
+# with an older Xcode cannot deploy to 27, so fall back to the SDK it ships.
+if [ "${major}" -ge "${CW_REQUIRED_MAJOR}" ]; then
+  CW_DEPLOYMENT_TARGET="${CW_REQUIRED_MAJOR}.0"
+else
+  sdk_version="$(xcrun --sdk macosx --show-sdk-version 2>/dev/null || true)"
+  CW_DEPLOYMENT_TARGET="${sdk_version:-${major}.0}"
+fi
+export CW_DEPLOYMENT_TARGET
+
 # stdout carries only machine-readable output (for eval), diagnostics go to stderr.
 printf 'DEVELOPER_DIR=%s\n' "${DEVELOPER_DIR}"
+printf 'CW_DEPLOYMENT_TARGET=%s\n' "$CW_DEPLOYMENT_TARGET"
 printf '# %s (%s)\n' "${version_line}" "${DEVELOPER_DIR}" >&2
+export CW_DEPLOYMENT_TARGET

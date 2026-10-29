@@ -71,6 +71,7 @@ common_args=(
   -scheme "${CW_SCHEME}"
   -configuration "${CONFIGURATION}"
   CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY:--}"
+  MACOSX_DEPLOYMENT_TARGET="${CW_DEPLOYMENT_TARGET:-27.0}"
 )
 if [ -n "${DEVELOPMENT_TEAM:-}" ]; then
   common_args+=( DEVELOPMENT_TEAM="${DEVELOPMENT_TEAM}" )
