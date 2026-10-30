@@ -5,8 +5,10 @@ import Observation
 @Observable
 final class CleanStore {
     private(set) var phase: ScanPhase = .idle
-    private(set) var selection: Set<CleanCategory> = Set(CleanCategory.scanOrder)
+    /// Every scanned item, in scan order.
     private(set) var scanResult: ScanResult = .empty
+    /// Item ids the user wants removed.
+    private(set) var selection: Set<String> = []
     private(set) var progress: Double = 0
     private(set) var currentPath: String = ""
     private(set) var lastError: String?
@@ -44,45 +46,73 @@ final class CleanStore {
 
     var isBusy: Bool { phase == .scanning || phase == .cleaning }
 
-    var selectedCategories: [CleanCategory] {
-        CleanCategory.scanOrder.filter { selection.contains($0) }
-    }
-
-    var selectedSize: Int64 {
-        selectedCategories.reduce(0) { $0 + size(for: $1) }
-    }
-
-    var lastTotal: Int64 { scanResult.totalSize }
+    // MARK: Items
 
     func items(for category: CleanCategory) -> [ScanItem] {
         scanResult.items.filter { $0.cleanType == category }
+    }
+
+    /// Items that the engine could not classify fall under Other.
+    func otherItems() -> [ScanItem] {
+        scanResult.items.filter { $0.cleanType == .other }
     }
 
     func size(for category: CleanCategory) -> Int64 {
         items(for: category).reduce(0) { $0 + $1.size }
     }
 
-    func isSelected(_ category: CleanCategory) -> Bool { selection.contains(category) }
+    func isSelected(_ item: ScanItem) -> Bool { selection.contains(item.id) }
+
+    func toggle(_ item: ScanItem) {
+        guard !isBusy else { return }
+        if selection.contains(item.id) {
+            selection.remove(item.id)
+        } else {
+            selection.insert(item.id)
+        }
+    }
+
+    /// Category-level state: all, some or none of its items are checked.
+    func selectionState(for category: CleanCategory) -> SelectionState {
+        let items = items(for: category)
+        guard !items.isEmpty else { return .none }
+        let checked = items.filter { selection.contains($0.id) }.count
+        if checked == 0 { return .none }
+        return checked == items.count ? .all : .partial
+    }
 
     func toggle(_ category: CleanCategory) {
         guard !isBusy else { return }
-        if selection.contains(category) {
-            guard selection.count > 1 else { return }
-            selection.remove(category)
+        let items = items(for: category)
+        guard !items.isEmpty else { return }
+        if selectionState(for: category) == .all {
+            selection.subtract(items.map(\.id))
         } else {
-            selection.insert(category)
+            selection.formUnion(items.map(\.id))
         }
-        reset()
     }
+
+    var selectedItems: [ScanItem] {
+        scanResult.items.filter { selection.contains($0.id) }
+    }
+
+    var selectedSize: Int64 { selectedItems.reduce(0) { $0 + $1.size } }
+    var selectedFileCount: Int { selectedItems.reduce(0) { $0 + $1.fileCount } }
+    var lastTotal: Int64 { scanResult.totalSize }
+
+    // MARK: Rules
 
     func loadRules() {
         let entries = (try? fileManager.contentsOfDirectory(at: rulesDirectory, includingPropertiesForKeys: nil)) ?? []
+        // Only rule documents count; the dump also drops metadata JSON here.
         let rules = entries
-            .filter { $0.pathExtension == "plist" || $0.pathExtension == "json" }
+            .filter { ["xml", "plist"].contains($0.pathExtension) }
             .map(\.lastPathComponent)
             .sorted()
         rulesVersion = rules.count == 1 ? rules[0] : rules.isEmpty ? "" : "\(rules[0]) +\(rules.count - 1)"
     }
+
+    // MARK: Scanning
 
     func scan() {
         guard !isBusy else { return }
@@ -94,16 +124,16 @@ final class CleanStore {
         lastFailed = 0
         currentPath = ""
         scanResult = .empty
+        selection = []
 
-        let categories = selectedCategories
         let rulesPath = rulesDirectory.path
         task = Task { [weak self] in
-            await self?.runScan(categories: categories, rulesPath: rulesPath)
+            await self?.runScan(rulesPath: rulesPath)
         }
     }
 
     func clean() {
-        guard !isBusy, !scanResult.items.isEmpty else { return }
+        guard !isBusy, !selectedItems.isEmpty else { return }
         task?.cancel()
         phase = .cleaning
         lastError = nil
@@ -112,7 +142,7 @@ final class CleanStore {
         progress = 0
         currentPath = ""
 
-        let targets = scanResult.items.filter { selection.contains($0.cleanType) }
+        let targets = selectedItems
         task = Task { [weak self] in
             await self?.runClean(items: targets)
         }
@@ -131,12 +161,16 @@ final class CleanStore {
         task?.cancel()
         task = nil
         scanResult = .empty
+        selection = []
         phase = .idle
         progress = 0
         currentPath = ""
+        lastError = nil
+        lastTrashed = 0
+        lastFailed = 0
     }
 
-    private func runScan(categories: [CleanCategory], rulesPath: String) async {
+    private func runScan(rulesPath: String) async {
         do {
             phase = .scanning
             currentPath = rulesPath
@@ -151,10 +185,13 @@ final class CleanStore {
                 }
             }
 
-            let result = try await Engine.scan(rulesPath: rulesPath, categories: categories.map(\.rawValue))
+            let result = try await Engine.scan(rulesPath: rulesPath)
             ticker.cancel()
             guard !Task.isCancelled else { throw CancellationError() }
             scanResult = result
+            // Everything the scan found is checked after a scan; risky items
+            // stay off so the user opts into them.
+            selection = Set(result.items.filter { !$0.isCaution }.map { $0.id })
             progress = 1
             currentPath = ""
             phase = .ready
@@ -173,17 +210,19 @@ final class CleanStore {
     private func runClean(items: [ScanItem]) async {
         let paths = Array(Set(items.flatMap(\.paths))).sorted()
         let total = max(paths.count, 1)
-        var trashed: [String] = []
-        var failures: [(path: String, reason: String)] = []
+        var trashed = 0
+        var failures = 0
+        var firstFailure: (path: String, reason: String)?
 
         for (index, path) in paths.enumerated() {
             if Task.isCancelled { break }
             currentPath = path
             do {
                 try fileManager.trashItem(at: URL(fileURLWithPath: path), resultingItemURL: nil)
-                trashed.append(path)
+                trashed += 1
             } catch {
-                failures.append((path, error.localizedDescription))
+                failures += 1
+                if firstFailure == nil { firstFailure = (path, error.localizedDescription) }
             }
             progress = Double(index + 1) / Double(total)
         }
@@ -193,12 +232,13 @@ final class CleanStore {
             return
         }
 
-        lastTrashed = trashed.count
-        lastFailed = failures.count
-        if let failure = failures.first {
+        lastTrashed = trashed
+        lastFailed = failures
+        if let failure = firstFailure {
             lastError = "\(failure.path): \(failure.reason)"
         }
         let removed = Set(items.map(\.id))
+        selection.subtract(removed)
         let remaining = scanResult.items.filter { !removed.contains($0.id) }
         scanResult = ScanResult(
             items: remaining,

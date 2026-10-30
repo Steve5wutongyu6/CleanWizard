@@ -12,6 +12,32 @@ use crate::rules::RuleSet;
 use crate::scanner::scan::{self, Scope};
 use crate::support::json::{self, Json};
 
+
+/// Load a rule set from a file or a directory of rule files.
+fn load_rules(path: &Path) -> Result<RuleSet, String> {
+    if path.is_dir() {
+        let sets = RuleSet::load_dir(path)
+            .map_err(|errs| errs.iter().map(|e| e.to_string()).collect::<Vec<_>>().join("; "))?;
+        let mut merged = RuleSet {
+            version: String::new(),
+            appstore_version: None,
+            categories: Vec::new(),
+            cautions: Vec::new(),
+            global_filters: Vec::new(),
+            source: None,
+        };
+        for set in sets {
+            merged.merge(set);
+        }
+        if merged.categories.is_empty() {
+            return Err(format!("no rule files found in {}", path.display()));
+        }
+        Ok(merged)
+    } else {
+        RuleSet::load_file(path).map_err(|e| e.to_string())
+    }
+}
+
 /// Returns the engine semantic version.
 #[no_mangle]
 pub extern "C" fn cw_engine_version() -> *mut c_char {
@@ -23,29 +49,7 @@ pub extern "C" fn cw_engine_version() -> *mut c_char {
 pub extern "C" fn cw_parse_rules(rules_path: *const c_char) -> *mut c_char {
     guard(|| {
         let path = unsafe { unsafe_str(rules_path) }?;
-        let path = Path::new(&path);
-        let rules = if path.is_dir() {
-            let sets = RuleSet::load_dir(path).map_err(|errs| {
-                errs.iter()
-                    .map(|e| e.to_string())
-                    .collect::<Vec<_>>()
-                    .join("; ")
-            })?;
-            let mut merged = RuleSet {
-                version: String::new(),
-                appstore_version: None,
-                categories: Vec::new(),
-                cautions: Vec::new(),
-                global_filters: Vec::new(),
-                source: None,
-            };
-            for set in sets {
-                merged.merge(set);
-            }
-            merged
-        } else {
-            RuleSet::load_file(path).map_err(|e| e.to_string())?
-        };
+        let rules = load_rules(Path::new(&path))?;
         Ok(summary_json(&rules))
     })
 }
@@ -56,7 +60,7 @@ pub extern "C" fn cw_scan(rules_path: *const c_char, scope_json: *const c_char) 
     guard(|| {
         let rules_path = unsafe { unsafe_str(rules_path) }?;
         let scope_text = unsafe { unsafe_str(scope_json) }.unwrap_or_default();
-        let rules = RuleSet::load_file(Path::new(&rules_path)).map_err(|e| e.to_string())?;
+        let rules = load_rules(Path::new(&rules_path))?;
         let scope = parse_scope(&scope_text);
         let outcome = scan::scan(&rules, &scope);
         Ok(outcome_json(&outcome))

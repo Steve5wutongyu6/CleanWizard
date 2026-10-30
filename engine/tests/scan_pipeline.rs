@@ -153,3 +153,29 @@ fn cleaner_refuses_dangerous_paths() {
     assert!(plan.paths.is_empty(), "{:?}", plan.paths);
     assert_eq!(plan.skipped.len(), 4);
 }
+
+#[test]
+fn sibling_filter_groups_are_alternatives() {
+    // Three separate <filters> groups on one path: any one may match.
+    let scratch = Scratch::new("siblings");
+    let root = scratch.path().join("Downloads");
+    write(&root.join("setup.dmg"), 1000);
+    write(&root.join("archive.zip"), 2000);
+    write(&root.join("readme.txt"), 300);
+
+    let rules = RuleSet::parse_xml(&format!(
+        r#"<?xml version="1.0" encoding="UTF-8"?>
+<garbage version="t"><category title="App Junk"><item title="Installers" cleanType="app">
+<path type="dir" value="{}">
+<filters level="1"><filter column="filename" relation="end with" value=".dmg"/></filters>
+<filters level="1"><filter column="filename" relation="end with" value=".zip"/></filters>
+</path></item></category></garbage>"#,
+        root.display()
+    ))
+    .unwrap();
+
+    let outcome = scan(&rules, &Scope::default());
+    assert_eq!(outcome.items.len(), 1);
+    assert_eq!(outcome.items[0].size, 3000, "both groups contribute");
+    assert_eq!(outcome.items[0].file_count, 2, "readme.txt is excluded");
+}

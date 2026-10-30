@@ -6,30 +6,22 @@ struct MainWindowView: View {
     @State private var confirmClean = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 14) {
             header
-                .padding(.bottom, 20)
             categoryGrid
-            Spacer(minLength: 16)
+            itemList
             statusArea
-            Spacer(minLength: 16)
             footer
         }
-        .padding(24)
-        .frame(minWidth: 600, minHeight: 560)
+        .padding(20)
+        .frame(minWidth: 640, idealWidth: 720, minHeight: 560, idealHeight: 680)
         .navigationTitle("CleanWizard")
         .confirmationDialog("Move to Trash?", isPresented: $confirmClean, titleVisibility: .visible) {
-            Button("Move \(Format.files(selectedFileCount)) to Trash", role: .destructive) {
+            Button("Move \(Format.files(store.selectedFileCount)) to Trash", role: .destructive) {
                 store.clean()
             }
             Button("Cancel", role: .cancel) {}
         }
-    }
-
-    private var selectedFileCount: Int {
-        store.scanResult.items
-            .filter { store.selection.contains($0.cleanType) }
-            .reduce(0) { $0 + $1.fileCount }
     }
 
     private var headline: Int64 {
@@ -37,40 +29,70 @@ struct MainWindowView: View {
     }
 
     private var header: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .firstTextBaseline) {
             Text(Format.size(headline))
-                .font(.system(size: 50, weight: .semibold, design: .rounded))
+                .font(.system(size: 44, weight: .semibold, design: .rounded))
                 .monospacedDigit()
                 .contentTransition(.numericText())
                 .animation(.default, value: headline)
             Spacer()
             if store.isBusy {
-                ProgressRing(value: store.progress, side: 44)
+                ProgressRing(value: store.progress, side: 40)
             }
         }
     }
 
     private var categoryGrid: some View {
-        Grid(horizontalSpacing: 12, verticalSpacing: 12) {
-            GridRow {
-                card(.system)
-                card(.app)
-            }
-            GridRow {
-                card(.internet)
-                card(.other)
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
+            ForEach(CleanCategory.scanOrder) { category in
+                CategoryCard(
+                    category: category,
+                    size: store.size(for: category),
+                    state: store.selectionState(for: category),
+                    isEnabled: !store.isBusy && !store.items(for: category).isEmpty
+                ) {
+                    store.toggle(category)
+                }
             }
         }
+        .fixedSize(horizontal: false, vertical: true)
     }
 
-    private func card(_ category: CleanCategory) -> some View {
-        CategoryCard(
-            category: category,
-            size: store.size(for: category),
-            isSelected: store.isSelected(category),
-            isEnabled: !store.isBusy
-        ) {
-            store.toggle(category)
+    /// Sub-category rows, each with its own checkbox.
+    private var itemList: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 12) {
+                ForEach(CleanCategory.scanOrder) { category in
+                    let items = store.items(for: category)
+                    if !items.isEmpty {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(category.title)
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 6)
+                            ForEach(items) { item in
+                                ItemRow(
+                                    item: item,
+                                    isSelected: store.isSelected(item),
+                                    isEnabled: !store.isBusy
+                                ) {
+                                    store.toggle(item)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(.vertical, 4)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.background.secondary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay {
+            if store.scanResult.items.isEmpty && !store.isBusy {
+                Text("No scan yet")
+                    .font(.callout)
+                    .foregroundStyle(.tertiary)
+            }
         }
     }
 
@@ -99,7 +121,6 @@ struct MainWindowView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.default, value: store.phase)
     }
 
     private var footer: some View {
@@ -130,7 +151,7 @@ struct MainWindowView: View {
         switch store.phase {
         case .idle, .finished: "Scan"
         case .scanning: "Scanning"
-        case .ready: store.scanResult.items.isEmpty ? "Nothing to Clean" : "Clean"
+        case .ready: "Clean"
         case .cleaning: "Cleaning"
         }
     }
@@ -138,7 +159,7 @@ struct MainWindowView: View {
     private var primaryEnabled: Bool {
         switch store.phase {
         case .idle, .finished: true
-        case .ready: !store.scanResult.items.isEmpty
+        case .ready: !store.selectedItems.isEmpty
         case .scanning, .cleaning: false
         }
     }
@@ -149,5 +170,52 @@ struct MainWindowView: View {
         } else {
             store.scan()
         }
+    }
+}
+
+/// One cleanable sub-category with its own checkbox.
+struct ItemRow: View {
+    let item: ScanItem
+    let isSelected: Bool
+    let isEnabled: Bool
+    let action: () -> Void
+
+    @State private var isHovering = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 10) {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(isSelected ? AnyShapeStyle(.tint) : AnyShapeStyle(.tertiary))
+                Text(item.title)
+                    .lineLimit(1)
+                    .foregroundStyle(.primary)
+                if item.isCaution {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                        .help("Removes data you may still need")
+                }
+                Spacer(minLength: 8)
+                Text(Format.size(item.size))
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+                Text(Format.files(item.fileCount))
+                    .monospacedDigit()
+                    .foregroundStyle(.tertiary)
+                    .frame(width: 74, alignment: .trailing)
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background(isHovering ? AnyShapeStyle(.quaternary.opacity(0.35)) : AnyShapeStyle(.clear), in: .rect(cornerRadius: 6))
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .disabled(!isEnabled)
+        .onHover { isHovering = $0 }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(item.title)
+        .accessibilityValue(Format.size(item.size))
+        .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
     }
 }

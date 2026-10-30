@@ -57,6 +57,12 @@ enum RuleSource: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
+enum SelectionState: Equatable, Sendable {
+    case none
+    case partial
+    case all
+}
+
 enum ScanPhase: Equatable, Sendable {
     case idle
     case scanning

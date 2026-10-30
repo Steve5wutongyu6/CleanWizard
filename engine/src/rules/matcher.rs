@@ -271,11 +271,26 @@ impl Matcher {
             return Decision::Include;
         }
         let ctx = FilterContext::default();
-        let mut result = groups[0].relation.neutral();
+        // Sibling groups are alternative ways to match the same path, so they
+        // combine with OR; a group opts into AND only by declaring it.
+        let mut included = false;
         for group in groups {
-            result = result.combine(self.eval_group(c, group, ctx), group.relation);
+            match self.eval_group(c, group, ctx) {
+                Decision::Include => {
+                    included = true;
+                    if group.relation == Relation::And {
+                        break;
+                    }
+                }
+                Decision::Exclude => return Decision::Exclude,
+                Decision::Interrupt => {}
+            }
         }
-        result
+        if included {
+            Decision::Include
+        } else {
+            Decision::Interrupt
+        }
     }
 
     /// Evaluate a single group.

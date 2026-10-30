@@ -19,8 +19,7 @@ fn main() {
     let version = unsafe { take(cw_engine_version() as *mut c_char) };
     println!("engine {version}");
 
-    let rules_path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../CleanWizard/Resources/Rules/seed/seed.lwx.xml");
+    let rules_path = std::path::PathBuf::from(std::env::args().nth(1).unwrap_or_else(|| {"../CleanWizard/Resources/Rules/seed/seed.lwx.xml".to_string()}));
     let c_path = CString::new(rules_path.to_string_lossy().as_bytes()).unwrap();
 
     let summary = unsafe { take(cw_parse_rules(c_path.as_ptr())) };

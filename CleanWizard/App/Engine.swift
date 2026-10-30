@@ -22,6 +22,8 @@ struct ScanItem: Identifiable, Sendable, Hashable {
     let fileCount: Int
     let paths: [String]
     let isCaution: Bool
+    /// Default state from the rule set; the UI may change it.
+    let isSelected: Bool
 }
 
 struct ScanResult: Sendable {
@@ -51,17 +53,17 @@ enum Engine {
 
     private struct ScopePayload: Encodable {
         struct Options: Encodable {
-            let hidden = true
+            let hidden = false
             let emptyFolder = false
         }
 
-        let categories: [String]
         let options = Options()
     }
 
+    /// Scans every rule root; the UI decides what to keep afterwards.
     @concurrent
-    static func scan(rulesPath: String, categories: [String]) async throws -> ScanResult {
-        let payload = ScopePayload(categories: categories)
+    static func scan(rulesPath: String) async throws -> ScanResult {
+        let payload = ScopePayload()
         let scopeJSON = String(decoding: try JSONEncoder().encode(payload), as: UTF8.self)
         let data = try invoke { cw_scan(rulesPath, scopeJSON) }
         return try decodeScan(data)
@@ -110,7 +112,8 @@ enum Engine {
                 size: (entry["size"] as? NSNumber)?.int64Value ?? 0,
                 fileCount: (entry["fileCount"] as? NSNumber)?.intValue ?? 0,
                 paths: entry["paths"] as? [String] ?? [],
-                isCaution: entry["isCaution"] as? Bool ?? false
+                isCaution: entry["isCaution"] as? Bool ?? false,
+                isSelected: entry["selected"] as? Bool ?? true
             )
         }
         return ScanResult(
